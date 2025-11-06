@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IEC 62443 Visual Reference</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a1a;
+            color: #e0e0e0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #fff;
+            font-size: 2em;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: #252525;
+            border-radius: 8px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .legend-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+        }
+        
+        .quadrant-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .quadrant {
+            background: #252525;
+            border-radius: 12px;
+            padding: 25px;
+            border-left: 6px solid;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quadrant:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+        
+        .quadrant.program { border-color: #4A90E2; }
+        .quadrant.system { border-color: #50C878; }
+        .quadrant.component { border-color: #FF8C42; }
+        .quadrant.assessment { border-color: #9B59B6; }
+        
+        .quadrant h2 {
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        .quadrant.program h2 { color: #4A90E2; }
+        .quadrant.system h2 { color: #50C878; }
+        .quadrant.component h2 { color: #FF8C42; }
+        .quadrant.assessment h2 { color: #9B59B6; }
+        
+        .quadrant-intro {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+        
+        .parts-list {
+            display: none;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #404040;
+        }
+        
+        .quadrant.expanded .parts-list {
+            display: block;
+        }
+        
+        .part-item {
+            background: #2a2a2a;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            border-left: 3px solid;
+        }
+        
+        .program .part-item { border-color: #4A90E2; }
+        .system .part-item { border-color: #50C878; }
+        .component .part-item { border-color: #FF8C42; }
+        .assessment .part-item { border-color: #9B59B6; }
+        
+        .part-number {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+        
+        .part-desc {
+            color: #b0b0b0;
+            margin-bottom: 10px;
+        }
+        
+        .nozomi-fit {
+            background: #1a3a1a;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 0.95em;
+        }
+        
+        .nozomi-fit strong {
+            color: #50C878;
+        }
+        
+        .customer-qs {
+            background: #3a2a1a;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 0.95em;
+        }
+        
+        .customer-qs strong {
+            color: #FF8C42;
+        }
+        
+        .expand-hint {
+            text-align: center;
+            color: #808080;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        
+        .key-terms {
+            background: #252525;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+        
+        .key-terms h3 {
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        
+        .term-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .term-item {
+            background: #2a2a2a;
+            padding: 12px;
+            border-radius: 6px;
+        }
+        
+        .term-label {
+            font-weight: bold;
+            color: #4A90E2;
+            margin-bottom: 5px;
+        }
+        
+        .term-meaning {
+            color: #b0b0b0;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>IEC 62443 Visual Reference</h1>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #4A90E2;"></div>
+                <span>Program/Policy</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #50C878;"></div>
+                <span>System/Network (Guardian)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #FF8C42;"></div>
+                <span>Product/Component</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #9B59B6;"></div>
+                <span>Assessment/Process</span>
+            </div>
+        </div>
+        
+        <div class="quadrant-grid">
+            <!-- PROGRAM QUADRANT -->
+            <div class="quadrant program" onclick="toggleQuadrant(this)">
+                <h2>📋 Program & Policy</h2>
+                <div class="quadrant-intro">What organizations must DO to run a security program</div>
+                <p><strong>Customer asks:</strong> "What do we need to implement?" or "What are our responsibilities?"</p>
+                <div class="expand-hint">▼ Click to expand parts</div>
+                
+                <div class="parts-list">
+                    <div class="part-item">
+                        <div class="part-number">Part 2-1: Security Program Requirements</div>
+                        <div class="part-desc">Management system for IACS security - policies, procedures, governance</div>
+                        <div class="nozomi-fit">
+                            <strong>Nozomi Vantage:</strong> Supports program requirements through centralized visibility, reporting for audits, evidence collection for compliance
+                        </div>
+                        <div class="customer-qs">
+                            <strong>They mean:</strong> "How do we prove we have a security program?" → Show Vantage dashboards, reporting, asset management
+                        </div>
+                    </div>
+                    
+                    <div class="part-item">
+                        <div class="part-number">Part 2-4: Asset Owner Requirements</div>
+                        <div class="part-desc">What operators/owners must do - asset inventory, monitoring, incident response</div>
+                        <div class="nozomi-fit">
+                            <strong>Guardian = Core solution:</strong> Asset discovery/inventory, anomaly detection, continuous monitoring, incident evidence
+                        </div>
+                        <div class="customer-qs">
+                            <strong>They mean:</strong> "What must we monitor/track?" → Guardian discovers assets, tracks changes, detects anomalies
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SYSTEM QUADRANT -->
+            <div class="quadrant system" onclick="toggleQuadrant(this)">
+                <h2>🌐 System & Network</h2>
+                <div class="quadrant-intro">How to DESIGN and DEPLOY secure OT systems</div>
+                <p><strong>Customer asks:</strong> "How do we build this securely?" or "What controls do we need?"</p>
+                <div class="expand-hint">▼ Click to expand parts</div>
+                
+                <div class="parts-list">
+                    <div class="part-item">
+                        <div class="part-number">Part 3-2: Security Risk Assessment</div>
+                        <div class="part-desc">How to assess risks and determine Security Levels (SL 1-4)</div>
+                        <div class="nozomi-fit">
+                            <strong>Guardian input:</strong> Provides asset data, vulnerability info, network topology for risk assessments
+                        </div>
+                        <div class="customer-qs">
+                            <strong>They mean:</strong> "What's our risk level?" → Guardian discovers what exists, feeds risk analysis
+                        </div>
+                    </div>
+                    
+                    <div class="part-item">
+                        <div class="part-number">Part 3-3: System Security Requirements (THE BIG ONE)</div>
+                        <div class="part-desc">Technical requirements - Foundational Requirements (FR) and System Requirements (SR)</div>
+                        <div class="nozomi-fit">
+                            <strong>Guardian = Primary tool:</strong> Implements detection, monitoring, logging for multiple FRs/SRs
+                            <br><br>
+                            <strong>Key mappings:</strong>
+                            <br>• FR 2 (Use Control) - Asset visibility, user tracking
+                            <br>• FR 4 (System Integrity) - Change detection, baseline monitoring
+                            <br>• FR 5 (Data Confidentiality) - Protocol visibility, data flow monitoring
+                            <br>• FR 6 (Restricted Data Flow) - Zone monitoring, conduit visibility
+                            <br>• FR 7 (Timely Response) - Alerts, incident detection, forensics
+                        </div>
+                        <div class="customer-qs">
+                            <strong>They mean:</strong> "Does Guardian help us meet technical requirements?" → YES, especially detection/monitoring/visibility requirements
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- COMPONENT QUADRANT -->
+            <div class="quadrant component" onclick="toggleQuadrant(this)">
+                <h2>🔧 Product & Component</h2>
+                <div class="quadrant-intro">What VENDORS must build into their products</div>
+                <p><strong>Customer asks:</strong> "Is your product certified?" or "Does Guardian meet 62443?"</p>
+                <div class="expand-hint">▼ Click to expand parts</div>
+                
+                <div class="parts-list">
+                    <div class="part-item">
+                        <div class="part-number">Part 4-1: Product Development Requirements</div>
+                        <div class="part-desc">Secure development lifecycle for vendors (like Nozomi)</div>
+                        <div class="nozomi-fit">
+                            <strong>Nozomi's responsibility:</strong> How Nozomi builds Guardian/Vantage/Arc - security in development process
+                        </div>
+                        <div class="customer-qs">
+                            <strong>They mean:</strong> "Do you build products securely?" → Reference Nozomi's SDL practices (you'll need this from product/eng)
+                        </div>
+                    </div>
+                    
+                    <div class="part-item">
+                        <div class="part-number">Part 4-2: Component Requirements (Certification target)</div>
+                        <div class="part-desc">Technical security requirements for products - Component Requirements (CR)</div>
+                        <div class="nozomi-fit">
+                            <strong>Guardian certification:</strong> Can be certified against 4-2 to specific Security Level
+                            <br><br>
+                            <strong>Similar to 3-3 but product-focused:</strong>
+                            <br>• Authentication controls IN Guardian
+                            <br>• Data protection BY Guardian
+                            <br>• Audit logging OF Guardian
+                        </div>
+                        <div class="customer-qs">
+                            <strong>They mean:</strong> "Is Guardian itself secure?" → Check if Guardian has 62443-4-2 certification or alignment statement
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ASSESSMENT QUADRANT -->
+            <div class="quadrant assessment" onclick="toggleQuadrant(this)">
+                <h2>✓ Assessment & Compliance</h2>
+                <div class="quadrant-intro">How to MEASURE and VERIFY compliance</div>
+                <p><strong>Customer asks:</strong> "How do we prove compliance?" or "What Security Level are we?"</p>
+                <div class="expand-hint">▼ Click to expand parts</div>
+                
+                <div class="parts-list">
+                    <div class="part-item">
+                        <div class="part-number">Part 2-3: Patch Management</div>
+                        <div class="part-desc">Requirements for vulnerability/patch management in IACS</div>
+                        <div class="nozomi-fit">
+                            <strong>Guardian helps:</strong> Vulnerability detection, asset tracking for patch status
+                        </div>
+                    </div>
+                    
+                    <div class="part-item">
+                        <div class="part-number">Part 3-1: Security Technologies</div>
+                        <div class="part-desc">Guide to security technologies for IACS (reference, not requirements)</div>
+                        <div class="nozomi-fit">
+                            <strong>Guardian fits:</strong> Network monitoring technology described in 3-1
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="key-terms">
+            <h3>Terminology Quick Reference (Confusing Terms Decoded)</h3>
+            <div class="term-grid">
+                <div class="term-item">
+                    <div class="term-label">SL-T (Target)</div>
+                    <div class="term-meaning">What security level you WANT to achieve based on risk</div>
+                </div>
+                <div class="term-item">
+                    <div class="term-label">SL-A (Achieved)</div>
+                    <div class="term-meaning">What security level you've ACTUALLY implemented</div>
+                </div>
+                <div class="term-item">
+                    <div class="term-label">SL-C (Capability)</div>
+                    <div class="term-meaning">What security level a PRODUCT can support</div>
+                </div>
+                <div class="term-item">
+                    <div class="term-label">FR (Foundational Req)</div>
+                    <div class="term-meaning">7 high-level categories (like chapters)</div>
+                </div>
+                <div class="term-item">
+                    <div class="term-label">SR (System Req)</div>
+                    <div class="term-meaning">Specific technical controls under each FR</div>
+                </div>
+                <div class="term-item">
+                    <div class="term-label">RE (Req Enhancement)</div>
+                    <div class="term-meaning">Stronger versions of SR for higher security levels</div>
+                </div>
+                <div class="term-item">
+                    <div class="term-label">CR (Component Req)</div>
+                    <div class="term-meaning">Like SR but for products (Part 4-2)</div>
+                </div>
+                <div class="term-item">
+                    <div class="term-label">Zone</div>
+                    <div class="term-meaning">Group of assets with same security level</div>
+                </div>
+                <div class="term-item">
+                    <div class="term-label">Conduit</div>
+                    <div class="term-meaning">Controlled connection BETWEEN zones</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function toggleQuadrant(element) {
+            element.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>
